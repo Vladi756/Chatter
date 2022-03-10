@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
           child: IconBackground(
             icon: Icons.search,
             onTap: () {
-              //print('TODO Search');
+              print('TODO Search');
             },
           ),
         ),
