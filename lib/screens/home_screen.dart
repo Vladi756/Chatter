@@ -1,15 +1,18 @@
+import 'package:chatter/screens/profile_screen.dart';
 import 'package:chatter/theme.dart';
 import 'package:chatter/widgets/icon_buttons.dart';
 import 'package:chatter/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:chatter/app.dart';
 
 import '../helpers.dart';
 import '../pages/messages_page.dart';
 import '../pages/calls_page.dart';
 import '../pages/contacts_page.dart';
 import '../pages/notifications_page.dart';
+import '../widgets/glowing_action_button.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -67,7 +70,14 @@ class HomeScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: Avatar.small(url: Helpers.randomPictureUrl()),
+            child: Hero(
+              tag: 'hero-profile-pic',
+              child: Avatar.small(url: context.currentUserImage,
+                onTap: (){
+                  Navigator.of(context).push(ProfileScreen.route);
+                },
+              ),
+            ),
           )
         ],
       ),
@@ -127,6 +137,24 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
             icon: CupertinoIcons.bell_solid,
             isSelected: (selectedIndex == 1),
             onTap: handleItemSelected,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: GlowingActionButton(
+              color: AppColors.secondary,
+              icon: CupertinoIcons.add,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const Dialog(
+                    child: AspectRatio(
+                      aspectRatio: 8 / 7,
+                      child: ContactsPage(),
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
           _NavigationBarItem(
             index: 2,
